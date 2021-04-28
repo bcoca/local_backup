@@ -6,8 +6,11 @@ __metaclass__ = type
 
 from ansible import constants as C
 from ansible.module_utils.backup import local_backup
-from ansible.plugins.action import ActionBase
 from ansible.utils.vars import merge_hash
+
+
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+from module_utils.backup import local_backup
 
 
 class ActionModule(ActionBase):

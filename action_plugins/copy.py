@@ -9,6 +9,7 @@ __metaclass__ = type
 import json
 import os
 import os.path
+import sys
 import stat
 import tempfile
 import traceback
@@ -17,11 +18,14 @@ from ansible import constants as C
 from ansible.errors import AnsibleError, AnsibleFileNotFound
 from ansible.module_utils.basic import FILE_COMMON_ARGUMENTS
 from ansible.module_utils._text import to_bytes, to_native, to_text
-from ansible.module_utils.backup import local_backup
 from ansible.module_utils.parsing.convert_bool import boolean
 from ansible.plugins.action import ActionBase
 from ansible.utils.hashing import checksum
 
+#append backup location
+
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+from module_utils.backup import local_backup
 
 # Supplement the FILE_COMMON_ARGUMENTS with arguments that are specific to file
 REAL_FILE_ARGS = frozenset(FILE_COMMON_ARGUMENTS.keys()).union(
