@@ -19,11 +19,14 @@ If running multiple plays you really only need to load once
 ```
 - hosts: localhost
   gather_facts: false
+  environment:
+	ANSIBLE_LOCAL_BACKUP: /var/tmp/backups/
   roles:
     - local_backup
 
 - hosts: yolo
   tasks:
     - copy: backup=yes src=testing2 dest=testing1
-
+	  environment:
+	    ANSIBLE_LOCAL_BACKUP: /backupdir/
 ```
