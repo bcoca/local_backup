@@ -27,6 +27,12 @@ If running multiple plays you really only need to load once
 - hosts: yolo
   tasks:
     - copy: backup=yes src=testing2 dest=testing1
-	  environment:
+      environment:
 	    ANSIBLE_LOCAL_BACKUP: /backupdir/
+```
+
+But if running against the controller, you need to set the envionrment vars before calling Ansible
+```
+ANSIBLE_LOCAL_BACKUP=/backups/ ansible-playbook ...
+
 ```
