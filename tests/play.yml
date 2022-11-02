@@ -1,0 +1,28 @@
+- name: requires env var set ANSIBLE_LOCAL_BACKUP to a dir
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - local_backup
+  vars:
+    backupdir: '{{lookup("env", "ANSIBLE_LOCAL_BACKUP")}}'
+    testdir: '{{lookup("env", "ANSIBLE_LOCAL_BACKUP_TESTDIR")|default("/tmp", true)}}'
+  tasks:
+    - debug: var=backupdir
+    - name: verify we have env var set
+      assert:
+        that:
+          - backupdir|default(False)
+
+    - block:
+      - name: initial file creation
+        copy: content='its a start' dest={{testdir}}/testfile
+
+      - name: Overwrite with first variation
+        copy: backup=yes src=testfile1 dest={{testdir}}/testfile
+        register: o1
+
+      - name: verify backup was to expected location
+        assert:
+          that:
+            - "'controller_backup' in o1"
+            - o1['controller_backup'] == backupdir
